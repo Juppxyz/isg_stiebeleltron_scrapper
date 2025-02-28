@@ -18,6 +18,9 @@ services:
       - MYSQL_DATABASE=stiebel_eltron
     ports:
       - "3306:3306"
+    volumes:
+      # 1) Hostpfad : Containerpfad
+      - /volume1/docker/selenium:/var/lib/mysql
 
   app:
     build: .
@@ -26,10 +29,8 @@ services:
       - selenium
       - mysql
     environment:
-      # Environment-Variablen, die dein Skript verwendet
       - MYSQL_HOST=mysql_db
       - MYSQL_USER=root
       - MYSQL_PASSWORD=Start123
       - MYSQL_DB=stiebel_eltron
-      - SELENIUM_URL=
       - TARGET_URL=http://192.168.0.100/?s=1,1
