@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  selenium:
+    image: selenium/standalone-chrome:latest
+    container_name: selenium
+    shm_size: 2gb
+    ports:
+      - "4444:4444"
+    environment:
+      - SE_NODE_MAX_SESSIONS=1
+      - SE_NODE_CONCURRENT_SESSIONS=1
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_db
+    environment:
+      - MYSQL_ROOT_PASSWORD=Start123
+      - MYSQL_DATABASE=stiebel_eltron
+    ports:
+      - "3306:3306"
+
+  app:
+    build: .
+    container_name: stiebel_eltron
+    depends_on:
+      - selenium
+      - mysql
+    environment:
+      # Environment-Variablen, die dein Skript verwendet
+      - MYSQL_HOST=mysql_db
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=Start123
+      - MYSQL_DB=stiebel_eltron
+      - SELENIUM_URL=
+      - TARGET_URL=http://192.168.0.100/?s=1,1
