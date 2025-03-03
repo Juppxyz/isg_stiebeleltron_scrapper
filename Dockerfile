@@ -11,11 +11,14 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY app/ ./
 
-# 2) Cronjob einrichten
-# Beispiel: alle 5 Minuten wird das Skript aufgerufen
-# Alternativ kann man den Zeitplan in eine extra Datei auslagern (siehe "cronjob")
-RUN echo "*/5 * * * * python /usr/src/app/main.py >> /var/log/cron.log 2>&1" > /etc/cron.d/app-cron
+# 1) Cronjob in Datei schreiben
+RUN echo "*/5 * * * * /usr/local/bin/python /usr/src/app/main.py >> /var/log/cron.log 2>&1" > /etc/cron.d/app-cron
+
+# 2) Berechtigungen setzen
 RUN chmod 0644 /etc/cron.d/app-cron
+
+# 3) Cron-Job installieren
 RUN crontab /etc/cron.d/app-cron
 
+# 4) Container im Vordergrund laufen lassen
 CMD ["cron", "-f"]

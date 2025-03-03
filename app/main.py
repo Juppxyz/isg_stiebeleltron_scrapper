@@ -18,13 +18,7 @@ def scrape_and_store():
     cursor = conn.cursor()
 
     # Tabelle erstellen (falls nicht vorhanden)
-    create_table_query = """
-CREATE TABLE IF NOT EXISTS prozessdaten (
-id INT AUTO_INCREMENT PRIMARY KEY,
-`key` VARCHAR(255) NOT NULL,
-`value` VARCHAR(255) NOT NULL
-);
-    """
+    create_table_query = """CREATE TABLE IF NOT EXISTS stiebel_eltron.prozessdaten (id INT AUTO_INCREMENT PRIMARY KEY, `key` VARCHAR(255) NOT NULL, `value` VARCHAR(255) NOT NULL);"""
     cursor.execute(create_table_query)
     conn.commit()
 
